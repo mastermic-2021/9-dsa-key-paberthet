@@ -25,7 +25,7 @@ coll_search() = {
   while(test==0, 
     k = random(10^10-1)+1; 
     rk = lift(Mod(lift(g^k),q));
-    if(mapisdefined(map,rk),[h,r,s] = mapget(map,sig[i][2]); test =1)
+    if(mapisdefined(map,rk),[h,r,s] = mapget(map,rk); test =1)
   );
   X = Mod(lift((s*k-h)*r^(-1)),q);
   print(lift(X));
