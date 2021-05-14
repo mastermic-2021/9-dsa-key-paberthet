@@ -5,3 +5,28 @@ check(s,dsa_pub) = {
   [g,q,X] = dsa_pub;
   lift( (g^h*X^r)^(1/s % q) ) % q == r;
 }
+
+/*On va tenter une attaque par collision. Si on ne la trouve pas dans les signatures fournies, 
+on testera des valeurs supplémentaires de k */
+
+/*On aura recours à des tables de hashage*/
+
+sig = readvec("input.txt");
+[g,q,X] = dsa_pub;
+p = g.mod;
+
+coll_search() = {
+  map = Map();
+  test = 0;
+  for(i = 1, #sig,
+    if(mapisdefined(map,sig[i][2]),[h,r,s] = mapget(map,sig[i][2]); test =1; break);
+    mapput(map, sig[i][2], sig[i])
+  );
+  while(test==0, 
+    k = random(10^10-1)+1; 
+    rk = lift(Mod(lift(g^k),q));
+    if(mapisdefined(map,rk),[h,r,s] = mapget(map,sig[i][2]); test =1)
+  );
+  X = Mod(lift((s*k-h)*r^(-1)),q);
+  print(lift(X));
+}
