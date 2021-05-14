@@ -30,3 +30,5 @@ coll_search() = {
   X = Mod(lift((s*k-h)*r^(-1)),q);
   print(lift(X));
 }
+
+coll_search();
